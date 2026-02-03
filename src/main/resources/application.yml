@@ -1,0 +1,40 @@
+server:
+  port: 8080
+
+spring:
+  # ▼▼▼ 新增配置开始：解决文件上传大小限制问题 ▼▼▼
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB      # 单个文件最大限制，根据你的需求调整
+      max-request-size: 50MB   # 单次请求总大小限制
+  # ▲▲▲ 新增配置结束 ▲▲▲
+
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/flight?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: zc050601
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    open-in-view: true 
+
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+
+  # RabbitMQ 配置
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+
+# MinIO 配置
+minio:
+  endpoint: http://127.0.0.1:9000
+  access-key: minioadmin
+  secret-key: minioadmin
+  bucket-name: flight-files

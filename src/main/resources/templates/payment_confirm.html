@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支付确认</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f4f4f4; }
+        .container { text-align: center; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        p { color: #555; font-size: 1.2em; }
+        .price { color: #d9534f; font-weight: bold; font-size: 2em; margin: 20px 0; }
+        .buttons { margin-top: 30px; }
+        button { color: white; border: none; padding: 15px 30px; border-radius: 5px; font-size: 1em; cursor: pointer; margin: 0 10px; }
+        #confirm-btn { background-color: #5cb85c; }
+        #cancel-btn { background-color: #f0ad4e; }
+        .message { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="container" id="payment-container">
+    <h1>请确认支付</h1>
+    <p th:text="${flightInfo}">航班信息</p>
+    <div class="price" th:text="'￥' + ${amount}">￥900.00</div>
+    <div class="buttons">
+        <button id="confirm-btn">确认支付</button>
+        <button id="cancel-btn">取消支付</button>
+    </div>
+</div>
+<div class="container" id="result-container" style="display: none;">
+    <h1 id="result-message"></h1>
+</div>
+
+<script>
+    const orderId = "[[${orderId}]]";
+    const confirmBtn = document.getElementById('confirm-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const paymentContainer = document.getElementById('payment-container');
+    const resultContainer = document.getElementById('result-container');
+    const resultMessage = document.getElementById('result-message');
+
+    confirmBtn.addEventListener('click', function() {
+        // 向后端发送支付确认请求
+        fetch('/payment/process', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'orderId=' + orderId
+        })
+        .then(response => response.json())
+        .then(data => {
+            paymentContainer.style.display = 'none';
+            resultMessage.textContent = '✅ 支付成功！';
+            resultContainer.style.display = 'block';
+        })
+        .catch(error => {
+            paymentContainer.style.display = 'none';
+            resultMessage.textContent = '❌ 支付失败，请重试。';
+            resultContainer.style.display = 'block';
+        });
+    });
+
+    cancelBtn.addEventListener('click', function() {
+        // 可以选择关闭窗口或者提示用户
+        paymentContainer.style.display = 'none';
+        resultMessage.textContent = '支付已取消。';
+        resultContainer.style.display = 'block';
+    });
+</script>
+</body>
+</html>
