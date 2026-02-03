@@ -46,3 +46,12 @@ docker/data/
 # System
 .DS_Store
 Thumbs.db
+# Docker 运行产生的数据
+docker/data/
+
+# 前端依赖和打包产物（千万不能传）
+**/node_modules/
+**/dist/
+*.mp4
+*.mov
+*.avi

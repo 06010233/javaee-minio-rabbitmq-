@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>航空订票系统</title>
+    
+    <!-- ★★★ 核心修复：手动定义 global 变量，解决 SockJS 报错 ★★★ -->
+    <!-- 必须放在其他 JS 库加载之前 -->
+    <script>
+      window.global = window;
+    </script>
+
+    <!-- 引入 Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  </head>
+  <body>
+    <div id="app"></div>
+    <!-- Vite 会自动处理这里的JS加载 -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
